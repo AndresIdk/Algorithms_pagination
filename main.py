@@ -59,9 +59,6 @@ opcion1.pack(pady=10)
 opcion2 = ttk.Button(menuFrame, text="LRU", command=LRU, style="TButton")
 opcion2.pack(pady=10)
 
-
-
-print(estado.get())
 ventana.mainloop()
 
 

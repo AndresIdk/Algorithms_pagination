@@ -11,21 +11,18 @@ def changeStatusLRU(estado, estadoAnterior):
     estado.set(2)
 
 def showInterfaces(ventana, estado, estadoAnterior):
-    frames = []
-    frames.append(Home(ventana))
-    frames.append(FifoFrame(ventana))
-    frames.append(LruFrame(ventana))
+    frames = [Home(ventana), FifoFrame(ventana), LruFrame(ventana)]
 
     if estado.get() == 0:
         print(estado.get())
         # Mostrar vista de inicio
-        frames[estadoAnterior.get()].pack_forget()
+        frames[estadoAnterior.get()].getFrame().pack_forget()
         frames[0].pack()
     elif estado.get() == 1:
         # Mostrar vista del algoritmo FIFO
-        frames[estadoAnterior.get()].pack_forget()
+        frames[estadoAnterior.get()].getFrame().pack_forget()
         frames[1].pack()
     else:
         # Mostrar vista del algoritmo LRU
-        frames[estadoAnterior.get()].pack_forget()
+        frames[estadoAnterior.get()].getFrame().pack_forget()
         frames[2].pack()
