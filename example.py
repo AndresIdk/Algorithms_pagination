@@ -1,18 +1,16 @@
 import tkinter as tk
+from tkinter import ttk
 
-def remove_frame():
-    frame.pack_forget()
+# Crear ventana
+ventana = tk.Tk()
 
-root = tk.Tk()
+# Crear frame con fondo
+frame_con_fondo = tk.Frame(ventana, bg="blue")
+frame_con_fondo.pack(fill="both", expand=True)
 
-frame = tk.Frame(root)
-frame.pack()
+# Crear botón dentro del frame
+boton = ttk.Button(frame_con_fondo, text="Botón")
+boton.pack(pady=20, padx=50)
 
-label = tk.Label(frame, text="¡Este es un frame!")
-label.pack()
-
-button = tk.Button(root, text="Quitar Frame", command=remove_frame)
-button.pack()
-
-root.mainloop()
-
+# Ejecutar ventana
+ventana.mainloop()
