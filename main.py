@@ -27,9 +27,10 @@ def OnClickLru():
 
 # Crear la ventana principal y configurarla
 ventana = tk.Tk()
-ventana.title("Algorigmos de reemplazo de páginas")
+ventana.title("Algoritmos de reemplazo de páginas")
 ventana.geometry("1000x600")
 ventana.resizable(False, False)
+ventana.iconbitmap("media/icon.ico")
 
 # Variable para guardar el estado del botón
 estado = tk.IntVar(value=0)  # Inicia con la intefaz de inicio
@@ -69,7 +70,7 @@ opcion2.pack(pady=10)
 
 # Crea frame contenedor
 contenedor = ttk.Frame(ventana)
-contenedor.place(width=884, height=548, x=105, y=45)
+contenedor.place(width=884, height=548, x=105, y=48)
 # contenedor.pack()
 
 # Los frames contenedores de las vistas
