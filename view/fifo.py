@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class FifoFrame(ttk.Frame):
+class FifoFrame(ttk.Frame): 
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -23,7 +23,6 @@ class FifoFrame(ttk.Frame):
         # Configuración y contenido del frame
         self.boton = ttk.Button(self.frame, text="Vista de FIFO", cursor="hand2")
 
-
     def mngFrame(self, funcion):
         if funcion:
             # Pinto el frame
@@ -31,7 +30,7 @@ class FifoFrame(ttk.Frame):
             self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
             self.boton.pack()
 
-             # Crear estilo personalizado
+            # Crear estilo personalizado
             styleTable = ttk.Style()
             styleTable.configure("EstiloTabla.Treeview",
                             background="#D3D3D3",
