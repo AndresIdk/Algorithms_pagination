@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, simpledialog
 from ttkthemes import ThemedStyle
 from functions.algortimos import FIFO, LRU  # Modulo de algoirtmos
 
@@ -14,8 +14,14 @@ from functions.helpers import (
     showInterfaces,
 )  # Modulo de funciones auxiliares para cambio de estado
 
-
 def OnClickFifo():
+    while(True):
+        memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
+        if(memoria.isdigit()):
+            if(int(memoria) <= 10):
+                memoria = int(memoria)
+                frames[0].memoria = memoria
+                break
     changeStatusFIFO(estado, estadoAnterior)
     showInterfaces(estado, estadoAnterior, frames)
 
@@ -71,7 +77,6 @@ opcion2.pack(pady=10)
 # Crea frame contenedor
 contenedor = ttk.Frame(ventana)
 contenedor.place(width=884, height=548, x=105, y=48)
-# contenedor.pack()
 
 # Los frames contenedores de las vistas
 frames = [FifoFrame(contenedor), LruFrame(contenedor)]
