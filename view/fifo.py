@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class FifoFrame(ttk.Frame):
+class FifoFrame(ttk.Frame): 
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -45,8 +45,6 @@ class FifoFrame(ttk.Frame):
     def actualizar_tabla(self):
         self.tree.delete(*self.tree.get_children())
 
-        for i, pagina in enumerate(self.paginas, start=1):
-            self.tree.insert('', 'end', values=(f'Marco {i}', pagina))
 
     def mngFrame(self, funcion):
         if funcion:

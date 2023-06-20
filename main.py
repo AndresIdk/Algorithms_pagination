@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog
+from PIL import Image, ImageTk
 from ttkthemes import ThemedStyle
 from functions.algortimos import FIFO, LRU  # Modulo de algoirtmos
 
@@ -25,8 +26,14 @@ def OnClickFifo():
     changeStatusFIFO(estado, estadoAnterior)
     showInterfaces(estado, estadoAnterior, frames)
 
-
 def OnClickLru():
+    while(True):
+        memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
+        if(memoria.isdigit()):
+            if(int(memoria) <= 10):
+                memoria = int(memoria)
+                frames[1].memoria = memoria
+                break
     changeStatusLRU(estado, estadoAnterior)
     showInterfaces(estado, estadoAnterior, frames)
 
