@@ -15,27 +15,71 @@ from functions.helpers import (
     showInterfaces,
 )  # Modulo de funciones auxiliares para cambio de estado
 
+algoritmo = 2  # Variable para guardar el algoritmo seleccionado
+indice = 0  # Variable para guardar el indice de la referencia
+band = 0  # Variable para guardar el estado de la referencia
+procesos = []  # Variable para guardar los procesos ingresados
+
 def OnClickFifo():
+    global algoritmo
     while(True):
         memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
         if(memoria.isdigit()):
             if(int(memoria) <= 10):
                 memoria = int(memoria)
                 frames[0].memoria = memoria
+                algoritmo = 0
                 break
     changeStatusFIFO(estado, estadoAnterior)
     showInterfaces(estado, estadoAnterior, frames)
 
 def OnClickLru():
+    global algoritmo 
     while(True):
         memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
         if(memoria.isdigit()):
             if(int(memoria) <= 10):
                 memoria = int(memoria)
                 frames[1].memoria = memoria
+                algoritmo = 1
                 break
     changeStatusLRU(estado, estadoAnterior)
     showInterfaces(estado, estadoAnterior, frames)
+
+def algoritmoEjecutado():
+    global indice
+    global band
+
+    if(not(algoritmo > 1 or algoritmo < 0)):
+        if(algoritmo == 0):
+            proceso = simpledialog.askstring("Procesos", "Ingrese proceso a ingresar")
+            while(True):
+                if(proceso.isdigit()):
+                    proceso = int(proceso)
+                    FIFO(frames[0], proceso, frames[0].indice, band)
+                    band = 1
+                    if(frames[0].indice >= frames[0].memoria - 1):
+                        frames[0].indice = 0
+                    else:
+                        if not(proceso in [i for i in range(1, frames[0].memoria + 1)]):
+                            print("No esta en la lista")
+                            if not(proceso in procesos):
+                                print("No esta en la lista de marcos")
+                                frames[0].indice += 1
+                            else:
+                                print("Esta en la lista de marcos")
+                            procesos.append(proceso)
+                    break
+        else:
+            LRU()
+    else:
+        label = tk.Label(ventana, text="Algoritmo no seleccionado", fg="red", font=("Times New Roman", 26))
+        label.pack(pady=50)
+        label.after(1500, label.destroy)
+        
+
+def algoritmoLru():
+    print("LRU seleccionadaaa")
 
 
 # Crear la ventana principal y configurarla
@@ -75,10 +119,10 @@ separator.place(x=100, y=45, rely=0, height=600)
 style = ThemedStyle(ventana)
 style.set_theme("arc")
 
-opcion1 = ttk.Button(menuFrame, text="INSERT", command=FIFO, style="TButton", cursor="hand2")
+opcion1 = ttk.Button(menuFrame, text="INSERT", command=algoritmoEjecutado, style="TButton", cursor="hand2")
 opcion1.pack(pady=10)
 
-opcion2 = ttk.Button(menuFrame, text="DELETE", command=LRU, style="TButton", cursor="hand2")
+opcion2 = ttk.Button(menuFrame, text="DELETE", command=algoritmoLru, style="TButton", cursor="hand2")
 opcion2.pack(pady=10)
 
 # Crea frame contenedor

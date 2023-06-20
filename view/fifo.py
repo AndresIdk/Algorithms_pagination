@@ -7,7 +7,7 @@ class FifoFrame(ttk.Frame):
         super().__init__(parent)
 
         self.memoria = 0
-        self.paginas = []
+        self.actual = []
         self.indice = 0
 
         # Creo estilos para el contenedor
@@ -24,73 +24,99 @@ class FifoFrame(ttk.Frame):
 
         # Configuración y contenido del frame
         self.boton = ttk.Button(self.frame, text="Vista de FIFO", cursor="hand2")
-        self.boton.config(command=self.agregar_referencia_FIFO)
 
-        self.label_referencia = ttk.Label(self.frame, text="Referencia:")
-        self.entry_referencia = ttk.Entry(self.frame)
-        self.boton_agregar_referencia = ttk.Button(self.frame, text="Agregar", cursor="hand2")
-        self.boton_agregar_referencia.config(command=self.agregar_referencia_FIFO)
+        # Crear estilo personalizado
+        styleTable = ttk.Style()
+        styleTable.configure("EstiloTabla.Treeview",
+                        background="#D3D3D3",
+                        foreground="black",
+                        fieldbackground="#D3D3D3",
+                        bordercolor="black",
+                        borderwidth=1,
+                        relief="solid")
 
-    def agregar_referencia_FIFO(self):
-        referencia = self.entry_referencia.get().strip()
-        if referencia:
-            if referencia not in self.paginas:  # Verificar si la referencia ya existe en la lista de páginas
-                if len(self.paginas) >= self.memoria:
-                    self.paginas[self.indice] = referencia  # Reemplazar la página más antigua en el índice actual
-                    self.indice = (self.indice + 1) % self.memoria  # Actualizar el índice circularmente
-                else:
-                    self.paginas.append(referencia)  # Agregar la nueva referencia al final de la lista
-                self.actualizar_tabla()
+        # Creo la tabla
+        self.tree = ttk.Treeview(self.frame, style="EstiloTabla.Treeview",columns=('#0','Referencia'))
+        # Oculto la primera columna
+        self.tree.heading('#0')
+        self.tree.column('#0', width=0, stretch=tk.NO)
+        # Creo las columnas
+        self.tree.heading('#1', text='Referencia', anchor='center')
+        self.tree.heading('#2', text='Página', anchor='center')
+        self.tree.column('#1', width=80, anchor='center')
+        self.tree.column('#2', width=80, anchor='center')
 
-    def actualizar_tabla(self):
-        self.tree.delete(*self.tree.get_children())
+        # Añadir línea divisora entre columnas 1 y 2
+        self.separator = ttk.Separator(self.frame, orient='vertical')
+        
+        # Creo la tabla de la data vieja
+        self.tree_vieja = ttk.Treeview(self.frame, style="EstiloTabla.Treeview",columns=('#0','Referencia'))
+        # Oculto la primera columna
+        self.tree_vieja.heading('#0')
+        self.tree_vieja.column('#0', width=0, stretch=tk.NO)
+        # Creo las columnas
+        self.tree_vieja.heading('#1', text='Referencia', anchor='center')
+        self.tree_vieja.heading('#2', text='Página', anchor='center')
+        self.tree_vieja.column('#1', width=80, anchor='center')
+        self.tree_vieja.column('#2', width=80, anchor='center')
+
+        # Creo la tabla de la data nueva
+        self.tree_nueva = ttk.Treeview(self.frame, style="EstiloTabla.Treeview",columns=('#0','Referencia'))
+        # Oculto la primera columna
+        self.tree_nueva.heading('#0')
+        self.tree_nueva.column('#0', width=0, stretch=tk.NO)
+        # Creo las columnas
+        self.tree_nueva.heading('#1', text='Referencia', anchor='center')
+        self.tree_nueva.heading('#2', text='Página', anchor='center')
+        self.tree_nueva.column('#1', width=80, anchor='center')
+        self.tree_nueva.column('#2', width=80, anchor='center')
+
 
 
     def mngFrame(self, funcion):
         if funcion:
             # Pinto el frame
             self.frame.pack(expand=True, fill=tk.BOTH)
-            self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
             self.boton.pack()
-
-            # Crear estilo personalizado
-            styleTable = ttk.Style()
-            styleTable.configure("EstiloTabla.Treeview",
-                                 background="#D3D3D3",
-                                 foreground="black",
-                                 fieldbackground="#D3D3D3",
-                                 bordercolor="black",
-                                 borderwidth=1,
-                                 relief="solid")
-
-            # Creo la tabla
-            self.tree = ttk.Treeview(self.frame, style="EstiloTabla.Treeview", columns=('#0', 'Referencia'))
-            # Oculto la primera columna
-            self.tree.heading('#0')
-            self.tree.column('#0', width=0, stretch=tk.NO)
-            # Creo las columnas
-            self.tree.heading('#1', text='Referencia', anchor='center')
-            self.tree.column('#1', width=80, anchor='center')
+            self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
             self.tree.place(x=100, y=100, width=300, height=250)
 
-            self.actualizar_tabla()
-
-            self.label_referencia.pack()
-            self.entry_referencia.pack()
-            self.boton_agregar_referencia.pack()
-
-            # Añadir línea divisora entre columnas 1 y 2
-            self.separator = ttk.Separator(self.frame, orient='vertical')
-            self.separator.place(in_=self.tree, relx=1 / 2, rely=0, relheight=1)
+            self.data = (
+                ('Marco {}'.format(i), 'Proceso {}'.format(i))
+                for i in range(1, self.memoria + 1)
+            )
+            
+            for item in self.data:
+                self.tree.insert('', 'end', values=(item[0], item[1]))
+                
+            self.separator.place(in_=self.tree, relx=1/2, rely=0, relheight=1)
 
         else:
             # Quito el frame
             self.frame.pack_forget()
+        
+    def showTables(self, lista_vieja, lista_nueva):
+        self.tree.pack_forget()
+        self.separator.pack_forget()
+
+        self.data_vieja = (
+                ('Marco {}'.format(i), 'Proceso {x}'.format(x=lista_vieja[i-1]))
+                for i in range(1, self.memoria + 1)
+        )
+
+        for item in self.data_vieja:
+                self.tree_vieja.insert('', 'end', values=(item[0], item[1]))
+
+        self.tree_vieja.place(x=100, y=100, width=300, height=250)
+
+        self.data_nueva = (
+                ('Marco {}'.format(i), 'Proceso {x}'.format(x=lista_nueva[i-1]))
+                for i in range(1, self.memoria + 1)
+        )
+
+        for item in self.data_nueva:
+                self.tree_vieja.insert('', 'end', values=(item[0], item[1]))
+
+        self.tree_nueva.place(x=500, y=100, width=300, height=250)
 
 
-# Crear ventana principal
-ventana = tk.Tk()
-
-# Crear instancia del frame FIFO
-fifo_frame = FifoFrame(ventana)
-ventana.mainloop()
