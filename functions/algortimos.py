@@ -26,7 +26,7 @@ def LRU(lruFrame, proceso, indice, band):
     # lruFrame.showTables(lista_vieja, lista_nueva)
 
 
-    # print("Lista vieja: ", lista_vieja)
+    print("Lista vieja: ", lista_vieja)
     # print("Lista nueva: ", lista_nueva)
 
 

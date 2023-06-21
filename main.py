@@ -136,9 +136,6 @@ style.set_theme("arc")
 opcion1 = ttk.Button(menuFrame, text="INSERT", command=algoritmoEjecutado, style="TButton", cursor="hand2")
 opcion1.pack(pady=10)
 
-opcion2 = ttk.Button(menuFrame, text="DELETE", command=algoritmoLru, style="TButton", cursor="hand2")
-opcion2.pack(pady=10)
-
 # Crea frame contenedor
 contenedor = ttk.Frame(ventana)
 contenedor.place(width=884, height=548, x=105, y=48)
