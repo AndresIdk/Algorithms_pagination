@@ -16,12 +16,13 @@ from functions.helpers import (
 )  # Modulo de funciones auxiliares para cambio de estado
 
 algoritmo = 2  # Variable para guardar el algoritmo seleccionado
-indice = 0  # Variable para guardar el indice de la referencia
 band = 0  # Variable para guardar el estado de la referencia
 procesos = []  # Variable para guardar los procesos ingresados
 
 def OnClickFifo():
+    memoria = 0
     global algoritmo
+    global band
     while(True):
         memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
         if(memoria.isdigit()):
@@ -31,10 +32,15 @@ def OnClickFifo():
                 algoritmo = 0
                 break
     changeStatusFIFO(estado, estadoAnterior)
+    band = 0
+    frames[0].indice = 0
     showInterfaces(estado, estadoAnterior, frames)
 
 def OnClickLru():
+    memoria = 0
     global algoritmo 
+    global band
+
     while(True):
         memoria = simpledialog.askstring("Memoria", "Ingrese marcos a utilizar (MAX 10):") # Variable para guardar los marcos de memoria disponibles
         if(memoria.isdigit()):
@@ -44,12 +50,13 @@ def OnClickLru():
                 algoritmo = 1
                 break
     changeStatusLRU(estado, estadoAnterior)
+    band = 0
+    frames[1].indice = 0
     showInterfaces(estado, estadoAnterior, frames)
 
 def algoritmoEjecutado():
-    global indice
     global band
-
+    procesos = frames[0].actual.copy()
     if(not(algoritmo > 1 or algoritmo < 0)):
         if(algoritmo == 0):
             proceso = simpledialog.askstring("Procesos", "Ingrese proceso a ingresar")
@@ -57,21 +64,28 @@ def algoritmoEjecutado():
                 if(proceso.isdigit()):
                     proceso = int(proceso)
                     FIFO(frames[0], proceso, frames[0].indice, band)
-                    band = 1
+                    band += 1
                     if(frames[0].indice >= frames[0].memoria - 1):
                         frames[0].indice = 0
                     else:
                         if not(proceso in [i for i in range(1, frames[0].memoria + 1)]):
-                            print("No esta en la lista")
                             if not(proceso in procesos):
-                                print("No esta en la lista de marcos")
                                 frames[0].indice += 1
-                            else:
-                                print("Esta en la lista de marcos")
-                            procesos.append(proceso)
                     break
         else:
-            LRU()
+            proceso = simpledialog.askstring("Procesos", "Ingrese proceso a ingresar")
+            while(True):
+                if(proceso.isdigit()):
+                    proceso = int(proceso)
+                    LRU(frames[1], proceso, frames[1].indice, band)
+                    band += 1
+                    if(frames[1].indice >= frames[1].memoria - 1):
+                        frames[1].indice = 0
+                    else:
+                        if not(proceso in [i for i in range(1, frames[1].memoria + 1)]):
+                            if not(proceso in procesos):
+                                frames[1].indice += 1
+                    break
     else:
         label = tk.Label(ventana, text="Algoritmo no seleccionado", fg="red", font=("Times New Roman", 26))
         label.pack(pady=50)

@@ -1,10 +1,7 @@
 def FIFO(fifoFrame, proceso, indice, band):
     if indice == 0 and band == 0:
-        print("La primera vez")
         fifoFrame.actual = [i for i in range(1, fifoFrame.memoria + 1)]
 
-    print(fifoFrame.actual)
-    # lista_actual = fifoFrame.actual
     lista_vieja = fifoFrame.actual.copy()
 
     # Para la lista nueva
@@ -20,7 +17,17 @@ def FIFO(fifoFrame, proceso, indice, band):
     print("Lista nueva: ", lista_nueva)
 
 
-def LRU():
-    print("LRU seleccionada")
+def LRU(lruFrame, proceso, indice, band):
+    if indice == 0 and band == 0:
+        lruFrame.actual = [i for i in range(1, lruFrame.memoria + 1)]
+
+    lista_vieja = lruFrame.actual.copy()
+
+    # lruFrame.showTables(lista_vieja, lista_nueva)
+
+
+    # print("Lista vieja: ", lista_vieja)
+    # print("Lista nueva: ", lista_nueva)
+
 
 
