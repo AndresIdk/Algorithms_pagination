@@ -17,17 +17,22 @@ def FIFO(fifoFrame, proceso, indice, band):
     print("Lista nueva: ", lista_nueva)
 
 
-def LRU(lruFrame, proceso, indice, band):
+def LRU(LruFrame, proceso, indice, band):
     if indice == 0 and band == 0:
-        lruFrame.actual = [i for i in range(1, lruFrame.memoria + 1)]
+        LruFrame.actual = [i for i in range(1, LruFrame.memoria + 1)]
 
-    lista_vieja = lruFrame.actual.copy()
+    lista_vieja = LruFrame.actual.copy()
 
-    # lruFrame.showTables(lista_vieja, lista_nueva)
+    if(proceso in lista_vieja):
+        lista_nueva = lista_vieja.copy()
+    else:
+        LruFrame.actual[indice] = proceso
+        lista_nueva = LruFrame.actual
 
+    LruFrame.showTables(lista_vieja, lista_nueva)
 
     print("Lista vieja: ", lista_vieja)
-    # print("Lista nueva: ", lista_nueva)
+    print("Lista nueva: ", lista_nueva)
 
 
 
