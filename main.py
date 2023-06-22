@@ -90,10 +90,6 @@ def algoritmoEjecutado():
         label = tk.Label(ventana, text="Algoritmo no seleccionado", fg="red", font=("Times New Roman", 26))
         label.pack(pady=50)
         label.after(1500, label.destroy)
-        
-
-def algoritmoLru():
-    print("LRU seleccionadaaa")
 
 
 # Crear la ventana principal y configurarla
@@ -117,6 +113,10 @@ opcFifo.pack(side=tk.LEFT, padx=10, pady=5)
 opcLru = ttk.Button(cabeceraFrame, command=OnClickLru, text="LRU", cursor="hand2")
 opcLru.pack(side=tk.LEFT, padx=10, pady=5)
 
+labelOpc = ttk.Label(cabeceraFrame, text="SELECCIONE UN ALGORITMO", font=("Helvetica", 14))
+labelOpc.configure(style="TLabel", foreground="blue")
+labelOpc.pack(side=tk.LEFT, padx=180, pady=5)
+
 # Crear la línea divisora
 lineaFrame = ttk.Frame(ventana, height=2)
 lineaFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=5)
@@ -133,8 +133,28 @@ separator.place(x=100, y=45, rely=0, height=600)
 style = ThemedStyle(ventana)
 style.set_theme("arc")
 
-opcion1 = ttk.Button(menuFrame, text="INSERT", command=algoritmoEjecutado, style="TButton", cursor="hand2")
-opcion1.pack(pady=10)
+# Cargar la imagen
+imagenI = Image.open("media/insert.png")
+imagenI = ImageTk.PhotoImage(imagenI)
+
+# Crear el botón y establecer la imagen de fondo
+opcion1 = ttk.Button(ventana, command=algoritmoEjecutado, style="TButton", cursor="hand2", image=imagenI, padding=0)
+opcion1.place(x=10, y=80, height=100, width=80)
+
+# Cargar imagen
+imagenL = Image.open("media/label.png")
+imagenL = ImageTk.PhotoImage(imagenL)
+# Crear label para el botón
+LabelInsert = ttk.Label(ventana, image=imagenL, padding=0)
+LabelInsert.place(x=25, y=180, width=50, height=50)
+
+# Cargar imagen
+imagenM = Image.open("media/memoria.png")
+imagenM = ImageTk.PhotoImage(imagenM)
+
+# Label para memoria ram
+LabelMemoria = ttk.Label(ventana,image=imagenM, padding=-9, justify=tk.LEFT)
+LabelMemoria.place(x=0, y=290, width=100, height=250)
 
 # Crea frame contenedor
 contenedor = ttk.Frame(ventana)

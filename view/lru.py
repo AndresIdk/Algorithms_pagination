@@ -119,21 +119,15 @@ class LruFrame(ttk.Frame):
             # Quito el frame
             self.tree.delete(*self.tree.get_children())
             self.frame.pack_forget()
-            self.tree_vieja.pack_forget()
-            self.tree_nueva.pack_forget()
+            self.tree_vieja.place_forget()
+            self.tree_nueva.place_forget()
 
     def showTables(self, lista_vieja, lista_nueva):
         # Label para la tabla vieja
-        label_vieja = ttk.Label(
-            self.frame, text="ANTES", font=("Times New Roman", 12),
-            foreground="red", anchor="center", justify="center"
-        )
+        label_vieja = ttk.Label(self.frame, text="ANTES", font=("Helvetica", 14), foreground="white", anchor="center", justify="center", background="red")
         label_vieja.place(x=200, y=50, width=100, height=20)
         # Label para la tabla nueva
-        label_nueva = ttk.Label(
-            self.frame, text="DESPUES", font=("Times New Roman", 12),
-            foreground="red", anchor="center", justify="center"
-        )
+        label_nueva = ttk.Label(self.frame, text="DESPUES", font=("Helvetica", 14), foreground="white", anchor="center", justify="center", background="green")
         label_nueva.place(x=550, y=50, width=100, height=20)
 
         # actual = lista_nueva
@@ -143,6 +137,8 @@ class LruFrame(ttk.Frame):
             self.tree_vieja.delete(*self.tree_vieja.get_children())
             self.tree_nueva.delete(*self.tree_nueva.get_children())
             self.tree_vieja.place(x=100, y=100, width=300, height=250)
+            self.tree_nueva.place(x=450, y=100, width=300, height=250)
+
             self.data_vieja = (
                 ('Marco {}'.format(i), 'Proceso {x}'.format(x=lista_vieja[i - 1]))
                 for i in range(1, self.memoria + 1)
@@ -151,7 +147,6 @@ class LruFrame(ttk.Frame):
             for item in self.data_vieja:
                 self.tree_vieja.insert('', 'end', values=(item[0], item[1]))
 
-            self.tree_nueva.place(x=450, y=100, width=300, height=250)
             self.data_nueva = (
                 ('Marco {}'.format(i), 'Proceso {x}'.format(x=lista_nueva[i - 1]))
                 for i in range(1, self.memoria + 1)

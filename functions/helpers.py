@@ -21,6 +21,7 @@ def showInterfaces(estado, estadoAnterior, frames):
             frames[1].mngFrame(0)
             frames[0].mngFrame(1)
         else:
+            frames[0].mngFrame(0)
             frames[1].mngFrame(0)
             frames[0].mngFrame(1)
     else:
@@ -30,5 +31,6 @@ def showInterfaces(estado, estadoAnterior, frames):
             frames[1].mngFrame(0)
             frames[1].mngFrame(1)
         else:
+            frames[1].mngFrame(0)
             frames[0].mngFrame(0)
             frames[1].mngFrame(1)
